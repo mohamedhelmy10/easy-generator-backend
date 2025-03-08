@@ -14,6 +14,10 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  async comparePassword(plainPassword: string): Promise<boolean> {
+    return bcrypt.compare(plainPassword, this.password);
+  }
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
