@@ -1,8 +1,25 @@
-import { Controller, Post, Body, Get, Query, Logger } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Logger,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
+import { SignInUserDto } from './dto/sign-in-user.dto';
+import { AccessTokenDto } from '../auth/dto/access-token.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -27,18 +44,33 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
-  @Get(':email')
-  @ApiOperation({ summary: 'Get user by email' })
+  @Post('signin')
+  @ApiOperation({ summary: 'User sign in' })
+  @ApiResponse({
+    status: 201,
+    description: 'User signed in successfully',
+    type: AccessTokenDto,
+  })
+  @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  async signin(@Body() signInUserDto: SignInUserDto): Promise<AccessTokenDto> {
+    this.logger.log(`Authentication attempt for email: ${signInUserDto.email}`);
+    return this.usersService.signIn(signInUserDto);
+  }
+
+  @Get('profile')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get user profile' })
   @ApiResponse({
     status: 200,
-    description: 'User found',
+    description: 'User profile retrieved successfully',
     type: UserResponseDto,
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  async getUser(
-    @Query('email') email: string,
-  ): Promise<UserResponseDto | null> {
-    this.logger.log(`Fetching user with email: ${email}`);
-    return this.usersService.findByEmail(email);
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized - Invalid or missing token',
+  })
+  getProfile(@Req() req): UserResponseDto {
+    this.logger.log(`Read the profile for user with email : ${req.user.email}`);
+    return this.usersService.profile(req.user);
   }
 }
