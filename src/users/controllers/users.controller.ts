@@ -15,11 +15,11 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserResponseDto } from './dto/user-response.dto';
-import { SignInUserDto } from './dto/sign-in-user.dto';
-import { AccessTokenDto } from '../auth/dto/access-token.dto';
+import { UsersService } from '../services/users.service';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UserResponseDto } from '../dto/user-response.dto';
+import { SignInUserDto } from '../dto/sign-in-user.dto';
+import { AccessTokenDto } from '../../auth/dto/access-token.dto';
 
 @ApiTags('Users')
 @Controller('users')

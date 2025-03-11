@@ -20,8 +20,31 @@ This is the backend service for Easy Generator, built with NestJS and MongoDB fo
      NODE_ENV=development
      MONGO_URI=mongodb://localhost:27017/easy-generator
      JWT_SECRET=your_secret_key
-     PORT=3000
+     PORT=5000
      ```
+
+## Start MongoDB
+
+### Install MongoDB
+```sh
+sudo apt update
+sudo apt install -y mongodb
+```
+
+### Start MongoDB 
+```sh
+sudo systemctl start mongod
+```
+
+### Enable MongoDB 
+```sh
+sudo systemctl enable mongod
+```
+
+### Verify MongoDB 
+```sh
+sudo systemctl status mongod
+```
 
 ## Running the Application
 
@@ -39,7 +62,7 @@ npm run start:prod
 
 Swagger documentation is available at:
 ```
-http://localhost:3000/api
+http://localhost:5000/api
 ```
 
 ### Authentication Endpoints

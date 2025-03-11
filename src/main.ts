@@ -21,6 +21,12 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
   }
 
-  await app.listen(process.env.PORT ?? 3000);
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,POST',
+    credentials: true,
+  });
+
+  await app.listen(process.env.PORT ?? 5000);
 }
 void bootstrap();

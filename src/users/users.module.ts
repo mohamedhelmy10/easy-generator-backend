@@ -1,7 +1,7 @@
 import { Module, Logger, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
+import { UsersService } from './services/users.service';
+import { UsersController } from './controllers/users.controller';
 import { User, UserSchema } from './schemas/user.schema';
 import { AuthModule } from '../auth/auth.module';
 

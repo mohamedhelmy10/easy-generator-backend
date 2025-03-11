@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module';
       throttlers: [
         {
           ttl: 300000,
-          limit: 3,
+          limit: 10,
         },
       ],
     }),
